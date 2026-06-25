@@ -2,6 +2,6 @@
   functions = "netlify/functions"
 
 [[redirects]]
-  from = "/homilia"
-  to = "/.netlify/functions/homilia"
+  from = "/palavra-do-papa"
+  to = "/.netlify/functions/palavra-do-papa"
   status = 200
