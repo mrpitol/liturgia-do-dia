@@ -9,7 +9,7 @@ const cache = new NodeCache({ stdTTL: 60 * 60 * 6 }); // 6h
 // -----------------------------
 
 async function scrapeVaticanNews() {
-  const url = "https://www.vaticannews.va/pt.html";
+  const url = "https://www.vaticannews.va/pt/palavra-do-dia.html";
 
   const { data } = await axios.get(url, {
     headers: { "User-Agent": "Mozilla/5.0" }
