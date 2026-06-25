@@ -3,7 +3,7 @@ const cheerio = require("cheerio");
 
 exports.handler = async function () {
   try {
-    const url = "https://www.vaticannews.va/pt.html";
+    const url = "https://www.vaticannews.va/pt/palavra-do-dia.html";
 
     const { data } = await axios.get(url, {
       headers: { "User-Agent": "Mozilla/5.0" }
