@@ -1,4 +1,16 @@
 {
   "name": "liturgia-api",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "description": "API de scraping da liturgia diária",
+  "main": "index.js",
+  "scripts": {
+    "start": "netlify dev"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.36.0"
+  }
 }
