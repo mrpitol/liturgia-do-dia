@@ -1,46 +1,34 @@
-const fetch = require("node-fetch");
+const axios = require("axios");
 const cheerio = require("cheerio");
 
-exports.handler = async () => {
+exports.handler = async function () {
   try {
-    const url = "https://www.vaticannews.va/pt/palavra-do-dia.html";
+    // URL da página da homilia (AJUSTAR)
+    const url = "https://www.vatican.va/content/vatican/pt.html";
 
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent": "Mozilla/5.0"
-      }
-    });
+    const { data } = await axios.get(url);
 
-    if (!response.ok) {
-      throw new Error("Erro ao acessar o site");
-    }
+    const $ = cheerio.load(data);
 
-    const html = await response.text();
-    const $ = cheerio.load(html);
-
+    // Ajustar seletores reais após inspeção da página
     const titulo = $("h1").first().text().trim();
-
-    const paragrafos = [];
-    $("article p").each((i, el) => {
-      const texto = $(el).text().trim();
-      if (texto) paragrafos.push(texto);
-    });
+    const texto = $("div.content").text().trim();
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        success: true,
-        titulo: titulo || "Palavra do dia",
-        paragrafos: paragrafos.length ? paragrafos : ["Nenhum texto encontrado"]
+        titulo,
+        homilia: texto,
+        fonte: url
       })
     };
 
-  } catch (error) {
+  } catch (err) {
     return {
       statusCode: 500,
       body: JSON.stringify({
-        success: false,
-        error: error.message
+        error: "Erro ao buscar homilia",
+        details: err.message
       })
     };
   }
