@@ -1,7 +1,3 @@
 [build]
+  publish = "."
   functions = "netlify/functions"
-
-[[redirects]]
-  from = "/palavra-do-papa"
-  to = "/.netlify/functions/palavra-do-papa"
-  status = 200
