@@ -1,29 +1,40 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 
-async function scrapeRaw(url) {
-  const { data } = await axios.get(url, {
-    headers: { "User-Agent": "Mozilla/5.0" }
-  });
+exports.handler = async function () {
+  try {
+    const url = "https://www.vaticannews.va/pt.html";
 
-  const $ = cheerio.load(data);
+    const { data } = await axios.get(url, {
+      headers: { "User-Agent": "Mozilla/5.0" }
+    });
 
-  // remove lixo estrutural
-  $("script, style, nav, footer, header, aside").remove();
+    const $ = cheerio.load(data);
 
-  let output = [];
+    $("script, style, nav, footer, header, aside").remove();
 
-  // captura tudo que é texto útil
-  $("h1, h2, h3, p, article, main, section").each((i, el) => {
-    const text = $(el).text().replace(/\s+/g, " ").trim();
+    let raw = [];
 
-    if (text && text.length > 2) {
-      output.push(text);
-    }
-  });
+    $("h1, h2, h3, p, article, main").each((i, el) => {
+      const text = $(el).text().replace(/\s+/g, " ").trim();
 
-  return {
-    url,
-    raw: output.join("\n")
-  };
-}
+      if (text.length > 2) raw.push(text);
+    });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        url,
+        raw: raw.join("\n")
+      })
+    };
+
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: err.message
+      })
+    };
+  }
+};
